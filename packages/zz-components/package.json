@@ -1,0 +1,21 @@
+{
+  "name": "zz-components",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "module": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@vueuse/core": "^10.2.0",
+    "vue": "^3.3.4"
+  },
+  "dependencies": {
+    "@zz-components/constants": "workspace:^",
+    "@zz-components/el-components": "workspace:^"
+  }
+}
