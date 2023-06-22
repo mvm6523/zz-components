@@ -7,9 +7,12 @@
   --vp-c-brand-light: rgb(87, 204, 204);
   /*--vp-c-brand-lighter: #9499ff;*/
   /*--vp-c-brand-lightest: #bcc0ff;*/
-  /*--vp-c-brand-dark: #535bf2;*/
+  --vp-c-brand-dark: rgb(26, 135, 135);
   /*--vp-c-brand-darker: #454ce1;*/
   /*--vp-c-brand-dimm: rgba(100, 108, 255, 0.08);*/
+  --primary-bg-color: -webkit-linear-gradient(120deg, rgb(94, 234, 234) 30%, rgb(252, 254, 138));
+  --primary-font-color: #5d5d5d;
+  --primary-font-hover-color: #333333;
 }
 
 /**
@@ -19,9 +22,11 @@
 :root {
   --vp-button-brand-border: var(--vp-c-brand-light);
   /*--vp-button-brand-text: var(--vp-c-white);*/
+  --vp-button-brand-text: var(--primary-font-color);
   --vp-button-brand-bg: var(--vp-c-brand);
   --vp-button-brand-hover-bg: rgb(65, 176, 176);
   --vp-button-brand-hover-border: var(--vp-c-brand-light);
+  --vp-button-brand-hover-text: var(--primary-font-hover-color);
   /*--vp-button-brand-hover-text: var(--vp-c-white);*/
   /*--vp-button-brand-hover-bg: var(--vp-c-brand-light);*/
   --vp-button-brand-active-border: var(--vp-c-brand-light);

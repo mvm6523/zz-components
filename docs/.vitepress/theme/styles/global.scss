@@ -1,0 +1,14 @@
+@use "element";
+
+.VPButton.brand {
+  background-image: var(--primary-bg-color)
+}
+
+.el-button--primary {
+  background-image: var(--primary-bg-color);
+  color: var(--primary-font-color);
+
+  &:hover {
+    color: var(--primary-font-hover-color);
+  }
+}
