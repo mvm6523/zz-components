@@ -13,6 +13,7 @@
   "sideEffects": false,
   "dependencies": {
     "@zz-components/utils": "workspace:^",
+    "@zz-components/constants": "workspace:^",
     "element-plus": "^2.3.6"
   }
 }

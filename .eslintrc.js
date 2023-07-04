@@ -33,5 +33,7 @@ module.exports = {
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
     'vue/multi-word-component-names': ['off', 'never'],
+    'vue/no-setup-props-destructure': ['off', 'never'],
+    'vue/prefer-import-from-vue': ['off', 'never'],
   },
 }

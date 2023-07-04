@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "isolatedModules": true,
     "noImplicitAny": false,
     "target": "esnext",
     "module": "esnext",
