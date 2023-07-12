@@ -71,7 +71,6 @@ if (formData) {
 } else {
   columns.forEach((column) => {
     if (column.initialValue) {
-      console.log(column)
       fieldChange(column.dataIndex, _.cloneDeep(column.initialValue))
     }
   })

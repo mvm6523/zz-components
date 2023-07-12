@@ -10,7 +10,7 @@ export default defineConfig({
   description: '基于VUE3和element plus的组件库',
   lastUpdated: true,
   lang: 'zh',
-  head: [['link', { rel: 'icon', href: '/images/drinks.svg' }]],
+  head: [['link', { rel: 'icon', href: '/zz-components/images/drinks.svg' }]],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
