@@ -10,7 +10,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ZZSchemaForm, SchemaFormInstance } from 'zz-components'
+import { ZZSchemaForm } from 'zz-components'
+import type { SchemaFormInstance } from 'zz-components'
 
 let columns = [
   {

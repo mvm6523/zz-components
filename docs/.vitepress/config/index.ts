@@ -15,7 +15,10 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/images/drinks.svg',
-    outlineTitle: '本页目录',
+    outline: {
+      level: 'deep',
+      label: '本页目录',
+    },
     editLink: {
       pattern: 'https://github.com/mvm6523/zz-components/tree/main/docs/:path',
       text: '在github编辑此页',
@@ -50,6 +53,7 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/mvm6523/zz-components' },
     ],
+    returnToTopLabel: '回到顶部',
   },
   markdown: {
     config: (md: any) => mdPlugin(md),

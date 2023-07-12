@@ -1,3 +1,4 @@
+// @ts-ignore
 import type SchemaForm from './schema-form.vue'
 import type { ExtractPropTypes, PropType } from 'vue'
 import { buildProps } from '@zz-components/utils'
