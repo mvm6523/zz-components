@@ -12,8 +12,10 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@zz-components/utils": "workspace:^",
+    "@types/lodash-es": "^4.17.7",
     "@zz-components/constants": "workspace:^",
-    "element-plus": "^2.3.6"
+    "@zz-components/utils": "workspace:^",
+    "element-plus": "^2.3.6",
+    "lodash-es": "^4.17.21"
   }
 }

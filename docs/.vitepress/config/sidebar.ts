@@ -13,7 +13,13 @@ export default {
     {
       text: '基础组件',
       collapsed: true,
-      items: [{ text: 'button', link: '/markdown/component/button' }],
+      items: [
+        { text: 'button', link: '/markdown/component/button' },
+        {
+          text: 'Schema Form - Json表单',
+          link: '/markdown/component/schema-form',
+        },
+      ],
     },
   ],
 }

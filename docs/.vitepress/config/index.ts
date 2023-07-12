@@ -7,7 +7,7 @@ import nav from './nav'
 export default defineConfig({
   base: '/zz-components/',
   title: 'ZZ Components',
-  description: '基于VUE3的组件库',
+  description: '基于VUE3和element plus的组件库',
   lastUpdated: true,
   lang: 'zh',
   head: [['link', { rel: 'icon', href: '/images/drinks.svg' }]],
@@ -15,6 +15,7 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/images/drinks.svg',
+    outlineTitle: '本页目录',
     editLink: {
       pattern: 'https://github.com/mvm6523/zz-components/tree/main/docs/:path',
       text: '在github编辑此页',

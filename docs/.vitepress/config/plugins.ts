@@ -1,24 +1,26 @@
-import path, { resolve } from "path";
+import path, { resolve } from 'path'
 import fs from 'fs'
-// @ts-ignore
+
 import MarkdownIt from 'markdown-it'
-// @ts-ignore
+
 import mdContainer from 'markdown-it-container'
 import { highlight } from '../utils/highlight'
-// @ts-ignore
+
 import type Token from 'markdown-it/lib/token'
-// @ts-ignore
+
 import type Renderer from 'markdown-it/lib/renderer'
 
 const projRoot = resolve(__dirname, '..', '..', '..')
-const docsDirName='docs'
-const docRoot=resolve(projRoot, docsDirName)
+const docsDirName = 'docs'
+const docRoot = resolve(projRoot, docsDirName)
 
 const localMd = MarkdownIt()
 
 interface ContainerOpts {
   marker?: string | undefined
+
   validate?(params: string): boolean
+
   render?(
     tokens: Token[],
     index: number,

@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { computed, getCurrentInstance, toRef } from "vue";
-import { isClient, useClipboard, useToggle } from "@vueuse/core";
-import { useSourceCode } from "../composables/source-code";
-import { usePlayground } from "../composables/use-playground";
+import { computed, getCurrentInstance, toRef } from 'vue'
+import { isClient, useClipboard, useToggle } from '@vueuse/core'
+import { useSourceCode } from '../composables/source-code'
+import { usePlayground } from '../composables/use-playground'
 
-import Example from "./demo/vp-example.vue";
-import SourceCode from "./demo/vp-source-code.vue";
+import Example from './demo/vp-example.vue'
+import SourceCode from './demo/vp-source-code.vue'
 
 import {
   GithubOutlined,
   CopyOutlined,
   ExpandOutlined,
   ExperimentOutlined,
-  CaretUpOutlined
-} from "@ant-design/icons-vue";
+  CaretUpOutlined,
+} from '@ant-design/icons-vue'
 
 const props = defineProps<{
   demos: object
@@ -21,56 +21,54 @@ const props = defineProps<{
   path: string
   rawSource: string
   description?: string
-}>();
+}>()
 
-const vm = getCurrentInstance()!;
-
+const vm = getCurrentInstance()!
 const { copy, isSupported } = useClipboard({
   source: decodeURIComponent(props.rawSource),
-  read: false
-});
+  read: false,
+})
 
-const [sourceVisible, toggleSourceVisible] = useToggle();
-const demoSourceUrl = useSourceCode(toRef(props, "path"));
+const [sourceVisible, toggleSourceVisible] = useToggle()
+const demoSourceUrl = useSourceCode(toRef(props, 'path'))
 
 const formatPathDemos = computed(() => {
-  const demos = {};
+  const demos = {}
 
   Object.keys(props.demos).forEach((key) => {
-    demos[key.replace("../../examples/", "").replace(".vue", "")] =
-      props.demos[key].default;
-  });
+    demos[key.replace('../../examples/', '').replace('.vue', '')] =
+      props.demos[key].default
+  })
 
-  return demos;
-});
+  return demos
+})
 
 const decodedDescription = computed(() =>
   decodeURIComponent(props.description!)
-);
+)
 
 const onPlaygroundClick = () => {
-  const { link } = usePlayground(props.rawSource);
-  if (!isClient) return;
-  window.open(link);
-};
+  const { link } = usePlayground(props.rawSource)
+  if (!isClient) return
+  window.open(link)
+}
 
 const copyCode = async () => {
-  const { $message } = vm.appContext.config.globalProperties;
+  const { $message } = vm.appContext.config.globalProperties
   if (!isSupported) {
-    $message.error("复制错误");
+    $message.error('复制错误')
   }
   try {
-    await copy();
-    $message.success("复制成功");
+    await copy()
+    $message.success('复制成功')
   } catch (e: any) {
-    $message.error(e.message);
+    $message.error(e.message)
   }
-};
+}
 
 const gotoGithub = () => {
-  window.open(demoSourceUrl.value + ".vue");
-};
-
+  window.open(demoSourceUrl.value + '.vue')
+}
 </script>
 
 <template>
@@ -91,18 +89,26 @@ const gotoGithub = () => {
         <!--        </ATooltip>-->
         <el-tooltip placement="bottom" content="在github中编辑">
           <GithubOutlined
-            style="font-size:16px"
+            style="font-size: 16px"
             class="op-btn github"
             @click="gotoGithub"
           >
           </GithubOutlined>
         </el-tooltip>
         <el-tooltip placement="bottom" content="复制代码">
-          <CopyOutlined style="font-size:16px" class="op-btn" @click="copyCode">
+          <CopyOutlined
+            style="font-size: 16px"
+            class="op-btn"
+            @click="copyCode"
+          >
           </CopyOutlined>
         </el-tooltip>
         <el-tooltip placement="bottom" content="查看源代码">
-          <ExpandOutlined style="font-size:16px" class="op-btn" @click="toggleSourceVisible()">
+          <ExpandOutlined
+            style="font-size: 16px"
+            class="op-btn"
+            @click="toggleSourceVisible()"
+          >
           </ExpandOutlined>
         </el-tooltip>
       </div>
@@ -119,8 +125,7 @@ const gotoGithub = () => {
           role="button"
           @click="toggleSourceVisible(false)"
         >
-          <CaretUpOutlined style="font-size:16px">
-          </CaretUpOutlined>
+          <CaretUpOutlined style="font-size: 16px"></CaretUpOutlined>
           <span>隐藏源代码</span>
         </div>
       </Transition>

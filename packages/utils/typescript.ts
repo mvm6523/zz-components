@@ -5,11 +5,11 @@ export type Mutable<T> = { -readonly [P in keyof T]: T[P] }
 
 export type HTMLElementCustomized<T> = HTMLElement & T
 
-/**
- * @deprecated stop to use null
- * @see {@link https://github.com/sindresorhus/meta/discussions/7}
- */
 export type Nullable<T> = T | null
 
 export type Arrayable<T> = T | T[]
 export type Awaitable<T> = Promise<T> | T
+
+export type CustomRequired<T, K extends keyof T> = {
+  [P in K]-?: T[P]
+} & Omit<T, K>

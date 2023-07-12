@@ -35,5 +35,6 @@ module.exports = {
     'vue/multi-word-component-names': ['off', 'never'],
     'vue/no-setup-props-destructure': ['off', 'never'],
     'vue/prefer-import-from-vue': ['off', 'never'],
+    '@typescript-eslint/no-non-null-assertion': ['off', 'never'],
   },
 }

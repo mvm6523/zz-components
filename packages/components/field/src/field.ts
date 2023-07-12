@@ -3,40 +3,101 @@ import type { ExtractPropTypes, PropType } from 'vue'
 import { buildProps } from '@zz-components/utils'
 import { isString } from '@vue/shared'
 import { UPDATE_MODEL_EVENT } from '@zz-components/constants'
+import type { FormItemProps } from 'element-plus'
+import type { componentMode } from '../../form'
+import type { Params, Key } from '../../form'
 
-export type componentMode = 'readonly' | 'create' | 'update'
+type anyObject = {
+  [k: string]: unknown
+}
 
-export type configProps = {
+export type FieldPropsType = {
+  onChange?: (params: Params) => anyObject
+} & anyObject
+
+export interface Request {
+  (...arg): unknown[]
+}
+
+export interface zzFieldProps {
+  dataIndex: Key
+  mode?: componentMode
   valueEnum?: {
     label: string
     value: unknown
+  }[]
+  fieldProps?: FieldPropsType
+  formItemProps?: Omit<FormItemProps, 'label' | 'prop'> & {
+    onChange?: (params: Params) => anyObject
   }
-}
-
-export type fieldProps = {}
-export type formItemProps = {}
-
-interface zzFieldProps {
-  mode: componentMode
-  config: configProps
-  fieldProps: fieldProps
-  formItemProps: formItemProps
+  request?: Request
+  componentId: string
+  component: string
+  initialValue: unknown
 }
 
 export const fieldProps = buildProps({
   /**
-   * @description 表单项模式
+   * @description 表单值的key
+   */
+  dataIndex: {
+    type: [String, Array] as PropType<zzFieldProps['dataIndex']>,
+    required: true,
+  },
+  /**
+   * @description 表单项初始值
+   */
+  initialValue: {
+    type: [Object, String, Array, Number, Boolean, Date] as PropType<unknown>,
+    required: false,
+    default: null,
+  },
+  /**
+   * @description 表单项模式  优先级高于form
    */
   mode: {
     type: String as PropType<zzFieldProps['mode']>,
     required: true,
   },
   /**
-   * @description 表单项的值
+   * @description 表单项值的枚举
    */
-  config: {
-    type: Object as PropType<zzFieldProps['config']>,
+  valueEnum: {
+    type: Array as PropType<zzFieldProps['valueEnum']>,
+    required: false,
+  },
+  /**
+   * @description 表单原子组件的参数和其变化方法
+   */
+  fieldProps: {
+    type: Object as PropType<zzFieldProps['fieldProps']>,
+    required: false,
+  },
+  /**
+   * @description 表单校验项的参数和其变化方法
+   */
+  formItemProps: {
+    type: Object as PropType<zzFieldProps['formItemProps']>,
+    required: false,
+  },
+  /**
+   * @description 将渲染的组件
+   */
+  component: {
+    type: String,
     required: true,
+  },
+  componentId: {
+    type: String,
+    required: true,
+  },
+  /**
+   * @description 每次值改变时会触发一次此方法,必须有返回值
+   */
+  convertValue: {
+    type: Function,
+    required: false,
+    default: null,
   },
 } as const)
 export type FieldEmits = typeof fieldEmits
@@ -46,6 +107,5 @@ export type fieldInstance = InstanceType<typeof Field>
 export type FieldProps = ExtractPropTypes<typeof fieldProps>
 
 export const fieldEmits = {
-  [UPDATE_MODEL_EVENT]: (value: string) => isString(value),
+  [UPDATE_MODEL_EVENT]: (key: Key, value: unknown) => isString(value),
 }
-

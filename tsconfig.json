@@ -16,6 +16,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefalutImports": true,
     "outDir": "./dist",
     "types": [
       // "webpack-env"
@@ -24,6 +26,9 @@
     "paths": {
       "#/*": [
         "types/*"
+      ],
+      "@/*": [
+        "packages/*"
       ]
     },
     "lib": [
@@ -35,9 +40,9 @@
   },
   "include": [
     "packages/**/src",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue",
     "shims-vue.d.ts",
     "docs/**/*.ts"
   ],

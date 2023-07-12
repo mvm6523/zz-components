@@ -5,8 +5,6 @@ import path, { resolve } from 'path'
 import type { Alias } from 'vite'
 
 export const projRoot = resolve(__dirname, '..')
-console.log(__dirname)
-console.log(projRoot)
 
 const alias: Alias[] = [
   {
@@ -25,7 +23,7 @@ const alias: Alias[] = [
 
 export default defineConfig({
   resolve: { alias },
-  plugins: [vueJsx(), MarkdownTransform()],
+  plugins: [MarkdownTransform(), vueJsx()],
   css: {
     preprocessorOptions: {
       scss: {},

@@ -1,4 +1,4 @@
-import type Button from './Button.vue'
+import type Button from './button.vue'
 import type { ExtractPropTypes } from 'vue'
 import { buildProps } from '@zz-components/utils'
 
