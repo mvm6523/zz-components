@@ -5,7 +5,7 @@
     </slot>
   </div>
   <div v-if="firstRender" v-show="mode === 'create' || mode === 'update'">
-    <el-form-item v-bind="innerFormItemProps">
+    <el-form-item v-bind="innerFormItemProps" ref="elFormItem">
       <slot
         v-bind="innerFieldProps"
         :modelValue="value"
@@ -42,6 +42,9 @@ const COMPONENT_NAME = 'ZZField'
 defineOptions({
   name: COMPONENT_NAME,
 })
+
+let elFormItem = ref(null)
+
 let {
   mode,
   valueEnum,

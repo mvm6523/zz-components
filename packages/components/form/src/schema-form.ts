@@ -1,12 +1,12 @@
 // @ts-ignore
 import type SchemaForm from './schema-form.vue'
 import type { ExtractPropTypes, PropType } from 'vue'
-import { buildProps } from '@zz-components/utils'
+import { Arrayable, buildProps } from '@zz-components/utils'
 import type { zzFieldProps } from '../../field'
 
 export type ShowType = 'display' | 'hidden' | 'none'
 
-export type Key = string | string[]
+export type Key = Arrayable<string>
 
 export type FieldChange = (key: Key, value: unknown) => void
 

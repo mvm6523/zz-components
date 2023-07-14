@@ -38,7 +38,8 @@ export interface zzFieldProps {
   component: string
   initialValue: unknown
   params: object
-  convertValue: (val: unknown) => any
+  convertValue: (val: unknown) => unknown
+  transform: (val: unknown) => unknown
 }
 
 export const fieldProps = buildProps({
