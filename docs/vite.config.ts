@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import path, { resolve } from 'path'
 import type { Alias } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 
 export const projRoot = resolve(__dirname, '..')
 
@@ -18,6 +19,15 @@ const alias: Alias[] = [
   {
     find: /^zz-components/,
     replacement: path.resolve(projRoot, 'packages/zz-components/index.ts'),
+  },
+  {
+    find: /^.*\/VPSwitchAppearance\.vue$/,
+    replacement: fileURLToPath(
+      new URL(
+        './.vitepress/vitepress/components/toggleMode/index.vue',
+        import.meta.url
+      )
+    ),
   },
 ]
 

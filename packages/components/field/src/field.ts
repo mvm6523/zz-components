@@ -22,10 +22,13 @@ export interface Request {
 export interface zzFieldProps {
   dataIndex: Key
   mode?: componentMode
-  valueEnum?: {
-    label: string
-    value: unknown
-  }[]
+  valueEnum?:
+    | {
+        label: string
+        value: unknown
+      }[]
+    | boolean[]
+    | string[]
   fieldProps?: FieldPropsType
   formItemProps?: Omit<FormItemProps, 'label' | 'prop'> & {
     onChange?: (params: Params) => anyObject
@@ -34,6 +37,8 @@ export interface zzFieldProps {
   componentId: string
   component: string
   initialValue: unknown
+  params: object
+  convertValue: (val: unknown) => any
 }
 
 export const fieldProps = buildProps({
@@ -92,10 +97,31 @@ export const fieldProps = buildProps({
     required: true,
   },
   /**
-   * @description 每次值改变时会触发一次此方法,必须有返回值
+   * @description 发生在组件获得数据之前，一般是后端直接给前端的数据，有时需要精加工一下
    */
   convertValue: {
-    type: Function,
+    type: Function as PropType<zzFieldProps['convertValue']>,
+    required: false,
+    default: null,
+  },
+  /**
+   * @description 发生在提交的时候，一般来说都是吐给后端的存在数据库里的数据
+   */
+  transform: {
+    type: Function as PropType<zzFieldProps['convertValue']>,
+    required: false,
+    default: null,
+  },
+  /**
+   * @description 网络请求的参数，修改会触发请求
+   */
+  params: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  request: {
+    type: Function as PropType<zzFieldProps['request']>,
     required: false,
     default: null,
   },

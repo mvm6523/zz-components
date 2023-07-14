@@ -37,5 +37,7 @@ module.exports = {
     'vue/prefer-import-from-vue': ['off', 'never'],
     '@typescript-eslint/no-non-null-assertion': ['off', 'never'],
     '@typescript-eslint/ban-ts-comment': ['off', 'never'],
+    '@typescript-eslint/no-explicit-any': ['off', 'never'],
+    '@typescript-eslint/no-empty-function': 'warn',
   },
 }

@@ -8,7 +8,7 @@
       v-for="item in innerColumns.filter(
         (column) => showMap.get(column.componentId) === 'display'
       )"
-      :key="item.dataIndex.toString()"
+      :key="item.dataIndex.toString() + showMap.get(item.componentId)"
     >
       <ZZField :mode="mode" v-bind="item" @[changeName]="fieldChange">
         <template #readonly="params">
@@ -104,12 +104,18 @@ for (let column of innerColumns.value) {
   showMap.value.set(getColumnId(column), 'display')
 }
 
-let getFormData = () => {
+// 获取所有表单项的值
+let getFormValue = () => {
   return _.cloneDeep(innerFormData.value)
+}
+// 获取单个表单项的值
+let getFieldValue = (key: string) => {
+  return _.cloneDeep(innerFormData.value[key])
 }
 
 defineExpose({
   fieldChange,
-  getFormData,
+  getFormValue,
+  getFieldValue,
 })
 </script>

@@ -8,12 +8,11 @@
     <el-form-item v-bind="innerFormItemProps">
       <slot
         v-bind="innerFieldProps"
-        :change="modelValueChange"
         :modelValue="value"
         @update:modelValue="modelValueChange"
       >
         <component
-          :is="component"
+          :is="renderComponent"
           v-bind="innerFieldProps"
           :modelValue="value"
           @update:modelValue="modelValueChange"
@@ -50,10 +49,32 @@ let {
   formItemProps,
   component,
   dataIndex,
-  convertValue,
   componentId,
 } = defineProps(zFieldProps)
 const emit = defineEmits(fieldEmits)
+
+let renderMap = {
+  autocomplete: 'el-autocomplete',
+  cascader: 'el-cascader',
+  checkbox: 'el-checkbox',
+  checkboxGroup: 'el-checkbox-group',
+  colorPicker: 'el-color-picker',
+  date: 'el-date-picker',
+  input: 'el-input',
+  inputNumber: 'el-input-number',
+  radio: 'el-radio-group', //需完成
+  radioButton: 'el-radio-group', //需完成
+  rate: 'el-rate',
+  select: 'el-select', //需完成
+  slider: 'el-slider',
+  switch: 'el-switch',
+  time: 'el-time-picker',
+  timeSelect: 'el-time-select',
+  transfer: 'el-transfer', //需完成
+  upload: 'el-upload',
+  treeSelect: 'el-tree-select',
+}
+let renderComponent = renderMap[component] || component
 
 const formContext = inject(formContextKey, undefined)
 
@@ -75,11 +96,7 @@ let value = computed({
 })
 
 let modelValueChange = (val) => {
-  if (convertValue) {
-    value.value = convertValue(val)
-  } else {
-    value.value = val
-  }
+  value.value = val
 }
 
 /**
