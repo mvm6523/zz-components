@@ -10,6 +10,8 @@ export type Key = Arrayable<string>
 
 export type FieldChange = (key: Key, value: unknown) => void
 
+// export type FormValidateCallback = (key: Key) =>
+
 export type Params = {
   setFieldValue: FieldChange
   getFieldValue: (key: string) => unknown

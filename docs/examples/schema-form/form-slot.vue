@@ -9,8 +9,9 @@
       ref="form"
       :columns="columns"
       :mode="mode"
+      :rules="rules"
     >
-      <template #id1="params">
+      <template #id1-component="params">
         <el-select v-bind="params" placeholder="选择框">
           <el-option label="上海" value="上海" />
           <el-option label="北京" value="北京" />
@@ -22,13 +23,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { ZZSchemaForm } from 'zz-components'
 import type { SchemaFormInstance } from 'zz-components'
 
 let columns = [
   {
-    dataIndex: 'b',
+    dataIndex: 'a',
     formItemProps: {
       label: '普通项',
     },
@@ -37,7 +38,7 @@ let columns = [
   },
   {
     componentId: 'id1',
-    dataIndex: 'a',
+    dataIndex: 'b',
     formItemProps: {
       label: '自定义插槽',
     },
@@ -47,10 +48,18 @@ let columns = [
 ]
 
 let form = ref<SchemaFormInstance | null>(null)
-
+let rules = reactive({
+  a: [{ required: true, message: '请输入', trigger: 'blur' }],
+})
 let onClick = () => {
-  let data = form.value.getFormData()
-  console.log(data)
+  let promise = form.value.validateFieldsReturnFormatValue()
+  promise
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 }
 
 let mode = ref('create')

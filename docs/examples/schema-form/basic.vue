@@ -15,11 +15,89 @@ import type { SchemaFormInstance } from 'zz-components'
 
 let columns = [
   {
-    dataIndex: 'a',
+    dataIndex: 'inputValue',
     formItemProps: {
       label: '输入框',
     },
-    component: 'el-input',
+    component: 'input',
+  },
+  {
+    dataIndex: 'radioValue',
+    fieldProps: {
+      options: [
+        {
+          label: 'Option A',
+          value: '1',
+        },
+        {
+          label: 'Option B',
+          value: '2',
+        },
+      ],
+    },
+    formItemProps: {
+      label: '单选框',
+    },
+    component: 'radio',
+  },
+  {
+    dataIndex: 'radioValue',
+    fieldProps: {
+      options: [
+        {
+          label: 'Option A',
+          value: '1',
+        },
+        {
+          label: 'Option B',
+          value: '2',
+        },
+      ],
+    },
+    formItemProps: {
+      label: '单选框按钮',
+    },
+    component: 'radioButton',
+  },
+  {
+    dataIndex: 'select',
+    fieldProps: {
+      options: [
+        {
+          label: 'Option A',
+          value: '1',
+        },
+        {
+          label: 'Option B',
+          value: '2',
+        },
+      ],
+    },
+    formItemProps: {
+      label: '选择框',
+    },
+    component: 'select',
+  },
+  {
+    dataIndex: 'transfer',
+    fieldProps: {
+      options: [
+        {
+          label: 'OptionA',
+          key: 1,
+          disabled: false,
+        },
+        {
+          label: 'OptionB',
+          key: 2,
+          disabled: false,
+        },
+      ],
+    },
+    formItemProps: {
+      label: '穿梭框',
+    },
+    component: 'transfer',
   },
   {
     dataIndex: ['startTime', 'endTime'],
@@ -39,7 +117,13 @@ let columns = [
 let form = ref<SchemaFormInstance | null>(null)
 
 let onClick = () => {
-  let data = form.value.getFormData()
-  console.log(data)
+  let promise = form.value.validateFieldsReturnFormatValue()
+  promise
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 }
 </script>

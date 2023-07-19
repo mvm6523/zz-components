@@ -5,18 +5,25 @@
     </slot>
   </div>
   <div v-if="firstRender" v-show="mode === 'create' || mode === 'update'">
-    <el-form-item v-bind="innerFormItemProps" ref="elFormItem">
+    <el-form-item
+      v-bind="innerFormItemProps"
+      :prop="dataIndex"
+      ref="formItemRef"
+    >
       <slot
+        name="component"
         v-bind="innerFieldProps"
         :modelValue="value"
-        @update:modelValue="modelValueChange"
+        @[changeName]="modelValueChange"
       >
         <component
           :is="renderComponent"
           v-bind="innerFieldProps"
           :modelValue="value"
-          @update:modelValue="modelValueChange"
-        ></component>
+          @[changeName]="modelValueChange"
+        >
+          <slot />
+        </component>
       </slot>
     </el-form-item>
   </div>
@@ -43,17 +50,12 @@ defineOptions({
   name: COMPONENT_NAME,
 })
 
-let elFormItem = ref(null)
+const changeName = UPDATE_MODEL_EVENT
 
-let {
-  mode,
-  valueEnum,
-  fieldProps,
-  formItemProps,
-  component,
-  dataIndex,
-  componentId,
-} = defineProps(zFieldProps)
+let formItemRef = ref(null)
+
+let { mode, fieldProps, formItemProps, component, dataIndex, componentId } =
+  defineProps(zFieldProps)
 const emit = defineEmits(fieldEmits)
 
 let renderMap = {
@@ -65,17 +67,18 @@ let renderMap = {
   date: 'el-date-picker',
   input: 'el-input',
   inputNumber: 'el-input-number',
-  radio: 'el-radio-group', //需完成
-  radioButton: 'el-radio-group', //需完成
+  radio: 'z-z-radio',
+  radioButton: 'z-z-radio-btn',
   rate: 'el-rate',
-  select: 'el-select', //需完成
+  select: 'z-z-select',
+  selectVirtualized: 'el-select-v2',
   slider: 'el-slider',
   switch: 'el-switch',
   time: 'el-time-picker',
   timeSelect: 'el-time-select',
-  transfer: 'el-transfer', //需完成
+  transfer: 'z-z-transfer',
   upload: 'el-upload',
-  treeSelect: 'el-tree-select',
+  treeSelect: 'z-z-tree-select',
 }
 let renderComponent = renderMap[component] || component
 
@@ -106,9 +109,9 @@ let modelValueChange = (val) => {
  * @description 获取只读模式时要显示的值
  */
 let getReadValue = () => {
-  if (valueEnum) {
-    return valueEnum.find((item) => item.value === value.value)?.label
-  }
+  // if (valueEnum) {
+  //   return valueEnum.find((item) => item.value === value.value)?.label
+  // }
   return value
 }
 

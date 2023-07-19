@@ -13,6 +13,13 @@ type anyObject = {
 
 export type FieldPropsType = {
   onChange?: (params: Params) => anyObject
+  options: {
+    label: string
+    value: unknown
+    disabled?: boolean
+    key?: string
+    children: any[]
+  }[]
 } & anyObject
 
 export interface Request {
@@ -22,24 +29,24 @@ export interface Request {
 export interface zzFieldProps {
   dataIndex: Key
   mode?: componentMode
-  valueEnum?:
-    | {
-        label: string
-        value: unknown
-      }[]
-    | boolean[]
-    | string[]
+  // valueEnum?:
+  //   | {
+  //       label: string
+  //       value: unknown
+  //     }[]
+  //   | boolean[]
+  //   | string[]
   fieldProps?: FieldPropsType
   formItemProps?: Omit<FormItemProps, 'label' | 'prop'> & {
     onChange?: (params: Params) => anyObject
   }
   request?: Request
-  componentId: string
+  componentId?: string
   component: string
-  initialValue: unknown
-  params: object
-  convertValue: (val: unknown) => unknown
-  transform: (val: unknown) => unknown
+  initialValue?: unknown
+  params?: object
+  convertValue?: (val: unknown) => unknown
+  transform?: (val: unknown) => unknown
 }
 
 export const fieldProps = buildProps({
@@ -68,10 +75,10 @@ export const fieldProps = buildProps({
   /**
    * @description 表单项值的枚举
    */
-  valueEnum: {
-    type: Array as PropType<zzFieldProps['valueEnum']>,
-    required: false,
-  },
+  // valueEnum: {
+  //   type: Array as PropType<zzFieldProps['valueEnum']>,
+  //   required: false,
+  // },
   /**
    * @description 表单原子组件的参数和其变化方法
    */
@@ -134,5 +141,5 @@ export type fieldInstance = InstanceType<typeof Field>
 export type FieldProps = ExtractPropTypes<typeof fieldProps>
 
 export const fieldEmits = {
-  [UPDATE_MODEL_EVENT]: (key: Key, value: unknown) => isString(value),
+  [UPDATE_MODEL_EVENT]: (key: Key, value: unknown) => true,
 }

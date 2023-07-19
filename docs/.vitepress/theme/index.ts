@@ -7,7 +7,7 @@ import 'element-plus/dist/index.css'
 import './styles/global.scss'
 import ElementPlus from 'element-plus'
 import * as icons from '@ant-design/icons-vue'
-// import zzComponents from 'zz-components'
+import zzComponents from 'zz-components'
 import { define } from '../utils/types'
 
 export default define({
@@ -23,7 +23,7 @@ export default define({
       app.component(name, Comp)
     })
     app.use(ElementPlus)
-    // app.use(zzComponents)
+    app.use(zzComponents)
     for (const [key, component] of Object.entries(icons)) {
       app.component(key, component)
     }
