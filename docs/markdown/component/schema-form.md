@@ -20,6 +20,18 @@ schema-form/basic
 
 :::
 
+## 带远程请求
+
+- 参数params由外部传入，每次修改会重新触发请求
+- request的优先级高于fieldProps里的options
+- request支持返回promise也支持返回符合类型的数组
+
+:::demo
+
+schema-form/request
+
+:::
+
 ## 依赖表单
 
 - 第二项的label取决于第一项的值；当第一项input值为disabled时，第二项变为无法操作
@@ -40,7 +52,7 @@ schema-form/depend-self
 
 :::
 
-## 自定义组件
+## 自定义组件（插槽使用）
 
 - 属性额外设置componentId 根据此id设置插槽
 

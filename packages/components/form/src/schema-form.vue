@@ -11,14 +11,19 @@
       )"
       :key="item.componentId"
     >
-      <ZZField :mode="mode" v-bind="item" @[changeName]="setFieldValue">
+      <ZZField
+        :mode="mode"
+        :config="item"
+        v-bind="item"
+        @[changeName]="setFieldValue"
+      >
         <template #readonly="params">
           <slot :name="item.componentId + '-readonly'" v-bind="params" />
         </template>
         <template #component="params">
           <slot :name="item.componentId + '-component'" v-bind="params" />
         </template>
-        <template #default="params">
+        <template #default="params" v-if="slots[item.componentId]">
           <slot :name="item.componentId" v-bind="params" />
         </template>
       </ZZField>
@@ -26,7 +31,15 @@
   </el-form>
 </template>
 <script setup lang="ts">
-import { provide, inject, ref, toRaw, computed, watchEffect } from 'vue'
+import {
+  provide,
+  inject,
+  ref,
+  toRaw,
+  computed,
+  watchEffect,
+  useSlots,
+} from 'vue'
 import type { FieldChange, Key, ShowType } from './schema-form'
 import { schemaFormProps, schemaFormEmits } from './schema-form'
 import { FORM_CONFIG_KEY } from '@zz-components/constants'
@@ -44,6 +57,8 @@ const COMPONENT_NAME = 'ZZSchemaForm'
 defineOptions({
   name: COMPONENT_NAME,
 })
+
+let slots = useSlots()
 
 let formRef = ref<FormInstance | null>(null)
 

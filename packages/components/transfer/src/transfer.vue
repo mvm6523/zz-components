@@ -5,9 +5,15 @@
     :modelValue="modelValue"
     @change="change"
   >
-    <slot>
-      <template #default></template>
-    </slot>
+    <template #left-footer>
+      <slot name="left-footer"></slot>
+    </template>
+    <template #right-footer>
+      <slot name="right-footer"></slot>
+    </template>
+    <template #default="{ option }" v-if="haveDefault">
+      <slot :option="option" />
+    </template>
   </el-transfer>
 </template>
 <script setup lang="ts">
@@ -27,6 +33,9 @@ const changeName = UPDATE_MODEL_EVENT
 let change = (value) => {
   emit(changeName, value)
 }
-
 let slots = useSlots()
+let haveDefault = slots.default && slots.default()[0].children !== 'v-if'
+let ccc = (v) => {
+  console.log(v)
+}
 </script>

@@ -12,23 +12,29 @@
     >
       <slot
         name="component"
-        v-bind="innerFieldProps"
+        v-bind="{ ...innerFieldProps, ...autoConfig }"
         :modelValue="value"
-        @[changeName]="modelValueChange"
+        :options="options"
+        @[changeModel]="modelValueChange"
+        @[changeKeyword]="keywordChange"
       >
         <component
+          ref="dynamicComponent"
           :is="renderComponent"
-          v-bind="innerFieldProps"
+          v-bind="{ ...innerFieldProps, ...autoConfig }"
           :modelValue="value"
-          @[changeName]="modelValueChange"
+          :options="options"
+          :loading="loading"
+          @[changeModel]="modelValueChange"
+          @[changeKeyword]="keywordChange"
         >
-          <slot />
+          <slot v-if="slots.default" />
         </component>
       </slot>
     </el-form-item>
   </div>
 </template>
-<script setup lang="ts">
+<script lang="tsx" setup>
 import {
   ref,
   watch,
@@ -38,24 +44,42 @@ import {
   computed,
   inject,
   isRef,
+  useSlots,
+  reactive,
 } from 'vue'
 import { fieldProps as zFieldProps, fieldEmits } from './field'
-import { UPDATE_MODEL_EVENT } from '@zz-components/constants'
+import {
+  UPDATE_KEYWORD_EVENT,
+  UPDATE_MODEL_EVENT,
+} from '@zz-components/constants'
 import type { FieldChange } from '../../form'
 import { formContextKey } from '../../form'
 import _ from 'lodash-es'
+import { isPromise } from '@zz-components/utils'
+
+let slots = useSlots()
 
 const COMPONENT_NAME = 'ZZField'
 defineOptions({
   name: COMPONENT_NAME,
 })
 
-const changeName = UPDATE_MODEL_EVENT
+const changeModel = UPDATE_MODEL_EVENT
+const changeKeyword = UPDATE_KEYWORD_EVENT
 
 let formItemRef = ref(null)
 
-let { mode, fieldProps, formItemProps, component, dataIndex, componentId } =
-  defineProps(zFieldProps)
+let {
+  mode,
+  fieldProps,
+  formItemProps,
+  component,
+  dataIndex,
+  componentId,
+  request,
+  params,
+  config,
+} = defineProps(zFieldProps)
 const emit = defineEmits(fieldEmits)
 
 let renderMap = {
@@ -187,6 +211,7 @@ if (haveFormItemChange || haveFieldItemChange) {
     getFieldValue: (key: string) => {
       return formContext?.formData.value[key]
     },
+    this: config,
   }
   scope.run(() => {
     if (haveFormItemChange) {
@@ -201,6 +226,53 @@ if (haveFormItemChange || haveFieldItemChange) {
     }
   })
 }
+
+/** 处理请求相关逻辑  开始  */
+let options = ref((fieldProps && fieldProps.options) || [])
+let loading = ref(false)
+let keyword = ref('')
+let autoConfig = reactive<Record<string, unknown>>({})
+const keywordChange = (query: string) => {
+  if (query) {
+    keyword.value = query
+  }
+}
+const loadOptions = () => {
+  if (request) {
+    autoConfig.filterable = true
+    autoConfig.remote = true
+    let res = request({ params, keyword: keyword.value })
+    loading.value = true
+    if (isPromise(res)) {
+      res
+        .then((res) => {
+          options.value = res
+        })
+        .finally(() => {
+          loading.value = false
+        })
+    } else if (Array.isArray(res)) {
+      options.value = res
+      loading.value = false
+    } else {
+      console.error('request 函数返回值应为Promise 或者 数组')
+      loading.value = false
+    }
+  }
+}
+
+watch(
+  () => [params, keyword.value],
+  () => {
+    loadOptions()
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+)
+
+/** 处理请求相关逻辑  结束  */
 
 onBeforeUnmount(() => {
   scope.stop()

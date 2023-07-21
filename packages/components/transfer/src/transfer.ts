@@ -8,7 +8,7 @@ export const transferProps = buildProps({
     required: true,
   },
   modelValue: {
-    type: [Number, String, Boolean],
+    type: Array,
     required: false,
   },
 } as const)

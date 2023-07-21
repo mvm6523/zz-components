@@ -1,10 +1,10 @@
 <template>
   <div style="text-align: center">
-    <ZZSchemaForm
-      label-width="120px"
-      ref="form"
-      :columns="columns"
-    ></ZZSchemaForm>
+    <ZZSchemaForm label-width="120px" ref="form" :columns="columns">
+      <template #transferId-left-footer>
+        <el-button>底部按钮</el-button>
+      </template>
+    </ZZSchemaForm>
     <el-button type="primary" @click="onClick">输出表单值在控制台</el-button>
   </div>
 </template>
@@ -80,6 +80,7 @@ let columns = [
   },
   {
     dataIndex: 'transfer',
+    componentId: 'transferId',
     fieldProps: {
       options: [
         {

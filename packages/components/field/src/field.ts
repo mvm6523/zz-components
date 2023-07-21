@@ -50,6 +50,11 @@ export interface zzFieldProps {
 }
 
 export const fieldProps = buildProps({
+  // 当前整个表单项
+  config: {
+    type: Object,
+    required: true,
+  },
   /**
    * @description 表单值的key
    */
