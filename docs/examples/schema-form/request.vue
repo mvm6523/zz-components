@@ -32,10 +32,8 @@ let columns = ref<Columns>([
       a: 1,
     },
     request: ({ params, keyword }) => {
-      console.log(params)
-      console.log(keyword)
       let arr = []
-      for (let i = 0; i < 10; i++) {
+      for (let i = params.a; i < 10; i++) {
         let obj = {
           label: keyword + i,
           value: i,

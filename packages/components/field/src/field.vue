@@ -28,7 +28,9 @@
           @[changeModel]="modelValueChange"
           @[changeKeyword]="keywordChange"
         >
-          <slot v-if="slots.default" />
+          <template #default="params" v-if="slots.default">
+            <slot v-bind="params" />
+          </template>
         </component>
       </slot>
     </el-form-item>
@@ -46,6 +48,7 @@ import {
   isRef,
   useSlots,
   reactive,
+  watchEffect,
 } from 'vue'
 import { fieldProps as zFieldProps, fieldEmits } from './field'
 import {
@@ -82,6 +85,7 @@ let {
 } = defineProps(zFieldProps)
 const emit = defineEmits(fieldEmits)
 
+// 组件映射关系
 let renderMap = {
   autocomplete: 'el-autocomplete',
   cascader: 'el-cascader',
@@ -205,23 +209,24 @@ let _formProp: any = null
 let _fieldProp: any = null
 // 借用vue自身的机制实现响应式依赖变更🎉🎉
 const scope = effectScope()
+let getFieldValue = (key: string) => {
+  return formContext?.formData.value[key]
+}
+let formExpose = {
+  setFieldValue: fieldChange,
+  getFieldValue,
+  this: config,
+}
 if (haveFormItemChange || haveFieldItemChange) {
-  let params = {
-    setFieldValue: fieldChange,
-    getFieldValue: (key: string) => {
-      return formContext?.formData.value[key]
-    },
-    this: config,
-  }
   scope.run(() => {
     if (haveFormItemChange) {
       _formProp = computed(() => {
-        return formItemProps!.onChange!(params) as object
+        return formItemProps!.onChange!(formExpose) as object
       })
     }
     if (haveFieldItemChange) {
       _fieldProp = computed(() => {
-        return fieldProps!.onChange!(params) as object
+        return fieldProps!.onChange!(formExpose) as object
       })
     }
   })
@@ -237,11 +242,21 @@ const keywordChange = (query: string) => {
     keyword.value = query
   }
 }
-const loadOptions = () => {
-  if (request) {
+
+if (request) {
+  var regexp = /getFieldValue\('.*'\)/g
+  let dependKeys = (request.toString().match(regexp) || []).map((item) =>
+    item.replace(/getFieldValue\('([^']*)'\)/, '$1')
+  )
+  const loadOptions = () => {
     autoConfig.filterable = true
     autoConfig.remote = true
-    let res = request({ params, keyword: keyword.value })
+    let res = request!({
+      params,
+      keyword: keyword.value,
+      getFieldValue,
+      setFieldValue: fieldChange,
+    })
     loading.value = true
     if (isPromise(res)) {
       res
@@ -259,18 +274,27 @@ const loadOptions = () => {
       loading.value = false
     }
   }
-}
 
-watch(
-  () => [params, keyword.value],
-  () => {
-    loadOptions()
-  },
-  {
-    deep: true,
-    immediate: true,
-  }
-)
+  dependKeys.forEach((item) => {
+    watch(
+      () => getFieldValue(item),
+      () => {
+        loadOptions()
+      }
+    )
+  })
+
+  watch(
+    () => [params, keyword.value],
+    () => {
+      loadOptions()
+    },
+    {
+      deep: true,
+      immediate: true,
+    }
+  )
+}
 
 /** 处理请求相关逻辑  结束  */
 

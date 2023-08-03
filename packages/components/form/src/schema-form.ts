@@ -3,6 +3,7 @@ import type SchemaForm from './schema-form.vue'
 import type { ExtractPropTypes, PropType } from 'vue'
 import { Arrayable, buildProps } from '@zz-components/utils'
 import type { zzFieldProps } from '../../field'
+import type { RowProps } from 'element-plus'
 
 export type ShowType = 'display' | 'hidden' | 'none'
 
@@ -42,6 +43,11 @@ export const schemaFormProps = buildProps({
    */
   formData: {
     type: Object,
+    required: false,
+    default: null,
+  },
+  rowProps: {
+    type: Object as PropType<RowProps>,
     required: false,
     default: null,
   },

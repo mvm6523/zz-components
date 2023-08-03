@@ -38,6 +38,9 @@ let columns = [
     formItemProps: {
       label: '单选框',
     },
+    colProps: {
+      span: 12,
+    },
     component: 'radio',
   },
   {
@@ -56,6 +59,9 @@ let columns = [
     },
     formItemProps: {
       label: '单选框按钮',
+    },
+    colProps: {
+      span: 12,
     },
     component: 'radioButton',
   },
@@ -104,14 +110,14 @@ let columns = [
     dataIndex: ['startTime', 'endTime'],
     fieldProps: {
       type: 'datetimerange',
-      'range-separator': 'To',
-      'start-placeholder': 'Start date',
-      'end-placeholder': 'End date',
+      'range-separator': '至',
+      'start-placeholder': '开始时间',
+      'end-placeholder': '结束时间',
     },
     formItemProps: {
       label: '时间范围选择框',
     },
-    component: 'el-date-picker',
+    component: 'date',
   },
 ]
 
@@ -128,3 +134,8 @@ let onClick = () => {
     })
 }
 </script>
+<style scoped>
+/deep/ .el-transfer__buttons {
+  padding: 0;
+}
+</style>

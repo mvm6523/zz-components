@@ -13,7 +13,17 @@
     >
       <template #id1-component="params">
         <el-select v-bind="params" placeholder="选择框">
-          <el-option label="上海" value="上海" />
+          <el-option label="上海" value="上海">
+            <span style="float: left">上海</span>
+            <span
+              style="
+                float: right;
+                color: var(--el-text-color-secondary);
+                font-size: 13px;
+              "
+              >上海</span
+            >
+          </el-option>
           <el-option label="北京" value="北京" />
         </el-select>
       </template>

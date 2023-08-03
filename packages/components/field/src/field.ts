@@ -3,7 +3,7 @@ import type { ExtractPropTypes, PropType } from 'vue'
 import { buildProps } from '@zz-components/utils'
 import { isString } from '@vue/shared'
 import { UPDATE_MODEL_EVENT } from '@zz-components/constants'
-import type { FormItemProps } from 'element-plus'
+import type { FormItemProps, ColProps } from 'element-plus'
 import type { componentMode } from '../../form'
 import type { Params, Key } from '../../form'
 
@@ -47,6 +47,7 @@ export interface zzFieldProps {
   params?: object
   convertValue?: (val: unknown) => unknown
   transform?: (val: unknown) => unknown
+  colProps?: ColProps
 }
 
 export const fieldProps = buildProps({
@@ -135,6 +136,11 @@ export const fieldProps = buildProps({
   },
   request: {
     type: Function as PropType<zzFieldProps['request']>,
+    required: false,
+    default: null,
+  },
+  colProps: {
+    type: Object as PropType<zzFieldProps['colProps']>,
     required: false,
     default: null,
   },

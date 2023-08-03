@@ -35,7 +35,4 @@ let change = (value) => {
 }
 let slots = useSlots()
 let haveDefault = slots.default && slots.default()[0].children !== 'v-if'
-let ccc = (v) => {
-  console.log(v)
-}
 </script>

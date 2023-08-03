@@ -5,29 +5,33 @@
     v-bind="{ ...formConfig, ...$attrs }"
     :model="innerFormData"
   >
-    <template
-      v-for="item in innerColumns.filter(
-        (column) => showMap.get(column.componentId) !== 'none'
-      )"
-      :key="item.componentId"
-    >
-      <ZZField
-        :mode="mode"
-        :config="item"
-        v-bind="item"
-        @[changeName]="setFieldValue"
+    <el-row v-bind="rowProps">
+      <el-col
+        v-for="item in innerColumns.filter(
+          (column) => showMap.get(column.componentId) !== 'none'
+        )"
+        :key="item.componentId"
+        :span="24"
+        v-bind="item.colProps"
       >
-        <template #readonly="params">
-          <slot :name="item.componentId + '-readonly'" v-bind="params" />
-        </template>
-        <template #component="params">
-          <slot :name="item.componentId + '-component'" v-bind="params" />
-        </template>
-        <template #default="params" v-if="slots[item.componentId]">
-          <slot :name="item.componentId" v-bind="params" />
-        </template>
-      </ZZField>
-    </template>
+        <ZZField
+          :mode="mode"
+          :config="item"
+          v-bind="item"
+          @[changeName]="setFieldValue"
+        >
+          <template #readonly="params">
+            <slot :name="item.componentId + '-readonly'" v-bind="params" />
+          </template>
+          <template #component="params">
+            <slot :name="item.componentId + '-component'" v-bind="params" />
+          </template>
+          <template #default="params" v-if="slots[item.componentId]">
+            <slot :name="item.componentId" v-bind="params" />
+          </template>
+        </ZZField>
+      </el-col>
+    </el-row>
   </el-form>
 </template>
 <script setup lang="ts">
@@ -65,7 +69,7 @@ let formRef = ref<FormInstance | null>(null)
 // 默认的表单配置项
 let formConfig = inject(FORM_CONFIG_KEY, {})
 
-let { mode, columns, formData } = defineProps(schemaFormProps)
+let { mode, columns, formData, rowProps } = defineProps(schemaFormProps)
 const emit = defineEmits(schemaFormEmits)
 
 let innerFormData = ref({})
@@ -118,7 +122,7 @@ for (let column of innerColumns.value) {
   showMap.value.set(column.componentId, 'display')
 }
 
-// 以下为表单导出方法
+// 以下为表单暴露方法
 /** 获取所有表单项的值  */
 let getFieldsValue = (keys?: string[] | undefined) => {
   let data = innerFormData.value

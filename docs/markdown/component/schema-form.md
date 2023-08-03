@@ -52,6 +52,14 @@ schema-form/depend-self
 
 :::
 
+### 级联选择
+
+:::demo
+
+schema-form/depend-request
+
+:::
+
 ## 自定义组件（插槽使用）
 
 - 属性额外设置componentId 根据此id设置插槽
