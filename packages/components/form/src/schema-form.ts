@@ -5,6 +5,8 @@ import { Arrayable, buildProps } from '@zz-components/utils'
 import type { zzFieldProps } from '../../field'
 import type { RowProps } from 'element-plus'
 
+export type FormType = 'Form' | 'ModalForm' | 'DrawerForm' | 'StepForm'
+
 export type ShowType = 'display' | 'hidden' | 'none'
 
 export type Key = Arrayable<string>
@@ -50,6 +52,11 @@ export const schemaFormProps = buildProps({
     type: Object as PropType<RowProps>,
     required: false,
     default: null,
+  },
+  layoutType: {
+    type: String as PropType<FormType>,
+    required: false,
+    default: 'Form',
   },
 } as const)
 export type SchemaFormProps = ExtractPropTypes<typeof schemaFormProps>

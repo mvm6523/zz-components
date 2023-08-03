@@ -48,7 +48,6 @@ import {
   isRef,
   useSlots,
   reactive,
-  watchEffect,
 } from 'vue'
 import { fieldProps as zFieldProps, fieldEmits } from './field'
 import {

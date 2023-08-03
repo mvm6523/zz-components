@@ -8,11 +8,12 @@
     <el-row v-bind="rowProps">
       <el-col
         v-for="item in innerColumns.filter(
-          (column) => showMap.get(column.componentId) !== 'none'
+          (column) => showMap.get(column.componentId) === 'display'
         )"
         :key="item.componentId"
         :span="24"
         v-bind="item.colProps"
+        v-memo="item.componentId"
       >
         <ZZField
           :mode="mode"
@@ -45,15 +46,17 @@ import {
   useSlots,
 } from 'vue'
 import type { FieldChange, Key, ShowType } from './schema-form'
+import type { zzFieldProps } from '@/components/field'
+import type { CustomRequired } from '@zz-components/utils'
+import type { FormItemProp, FormInstance } from 'element-plus'
+import type { FormContext } from './types'
+
 import { schemaFormProps, schemaFormEmits } from './schema-form'
 import { FORM_CONFIG_KEY } from '@zz-components/constants'
 import ZZField from '../../field'
-import type { zzFieldProps } from '@/components/field'
-import type { CustomRequired } from '@zz-components/utils'
 import { UPDATE_MODEL_EVENT } from '@zz-components/constants'
 import { formContextKey } from './constants'
 import _ from 'lodash-es'
-import type { FormItemProp, FormInstance } from 'element-plus'
 
 const changeName = UPDATE_MODEL_EVENT
 
@@ -99,9 +102,6 @@ if (formData) {
     }
   })
 }
-provide(formContextKey, {
-  formData: innerFormData,
-})
 
 type InnerColumns = CustomRequired<zzFieldProps, 'componentId'>[]
 let innerColumns = computed<InnerColumns>(() => {
@@ -121,6 +121,23 @@ let showMap = ref<Map<string, ShowType>>(new Map())
 for (let column of innerColumns.value) {
   showMap.value.set(column.componentId, 'display')
 }
+let setShowMap: FormContext['setShowMap'] = (componentId, dataIndex, type) => {
+  if (type === 'none') {
+    if (Array.isArray(dataIndex)) {
+      dataIndex.forEach((item) => {
+        delete innerFormData.value[item]
+      })
+    } else {
+      delete innerFormData.value[dataIndex]
+    }
+  }
+  showMap.value.set(componentId, type)
+}
+
+provide(formContextKey, {
+  formData: innerFormData,
+  setShowMap,
+})
 
 // 以下为表单暴露方法
 /** 获取所有表单项的值  */

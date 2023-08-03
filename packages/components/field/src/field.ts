@@ -48,6 +48,9 @@ export interface zzFieldProps {
   convertValue?: (val: unknown) => unknown
   transform?: (val: unknown) => unknown
   colProps?: ColProps
+  columnProps?: (
+    getFieldValue: Pick<Params, 'getFieldValue'>['getFieldValue']
+  ) => unknown
 }
 
 export const fieldProps = buildProps({
