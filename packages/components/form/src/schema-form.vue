@@ -7,13 +7,10 @@
   >
     <el-row v-bind="rowProps">
       <el-col
-        v-for="item in innerColumns.filter(
-          (column) => showMap.get(column.componentId) === 'display'
-        )"
+        v-for="item in innerColumns"
         :key="item.componentId"
         :span="24"
         v-bind="item.colProps"
-        v-memo="item.componentId"
       >
         <ZZField
           :mode="mode"
@@ -21,10 +18,16 @@
           v-bind="item"
           @[changeName]="setFieldValue"
         >
-          <template #readonly="params">
+          <template
+            #readonly="params"
+            v-if="slots[item.componentId + '-readonly']"
+          >
             <slot :name="item.componentId + '-readonly'" v-bind="params" />
           </template>
-          <template #component="params">
+          <template
+            #component="params"
+            v-if="slots[item.componentId + '-component']"
+          >
             <slot :name="item.componentId + '-component'" v-bind="params" />
           </template>
           <template #default="params" v-if="slots[item.componentId]">
@@ -117,11 +120,14 @@ watchEffect(() => {
   innerFormData.value = toRaw(formData) || {}
 })
 
-let showMap = ref<Map<string, ShowType>>(new Map())
+let displayMap = ref<Map<string, ShowType>>(new Map())
 for (let column of innerColumns.value) {
-  showMap.value.set(column.componentId, 'display')
+  displayMap.value.set(column.componentId, 'display')
 }
-let setShowMap: FormContext['setShowMap'] = (componentId, dataIndex, type) => {
+let getDisplay: FormContext['getDisplay'] = (componentId) => {
+  return displayMap.value.get(componentId)!
+}
+let setDisplay: FormContext['setDisplay'] = (componentId, dataIndex, type) => {
   if (type === 'none') {
     if (Array.isArray(dataIndex)) {
       dataIndex.forEach((item) => {
@@ -131,12 +137,13 @@ let setShowMap: FormContext['setShowMap'] = (componentId, dataIndex, type) => {
       delete innerFormData.value[dataIndex]
     }
   }
-  showMap.value.set(componentId, type)
+  displayMap.value.set(componentId, type)
 }
 
 provide(formContextKey, {
   formData: innerFormData,
-  setShowMap,
+  setDisplay,
+  getDisplay,
 })
 
 // 以下为表单暴露方法

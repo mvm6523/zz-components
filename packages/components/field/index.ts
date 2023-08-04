@@ -1,6 +1,6 @@
 import { withInstall } from '@zz-components/utils'
 
-import Field from './src/field.vue'
+import Field from './src/field.tsx'
 
 export const ZZField = withInstall(Field)
 export default ZZField

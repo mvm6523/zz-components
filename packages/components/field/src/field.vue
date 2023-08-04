@@ -1,10 +1,13 @@
 <template>
-  <div v-show="mode === 'readonly'">
+  <div v-if="display === 'display'" v-show="mode === 'readonly'">
     <slot name="readonly" :value="getReadValue()">
       {{ getReadValue() }}
     </slot>
   </div>
-  <div v-if="firstRender" v-show="mode === 'create' || mode === 'update'">
+  <div
+    v-if="firstRender && display === 'display'"
+    v-show="mode === 'create' || mode === 'update'"
+  >
     <el-form-item
       v-bind="innerFormItemProps"
       :prop="dataIndex"
@@ -15,6 +18,7 @@
         v-bind="{ ...innerFieldProps, ...autoConfig }"
         :modelValue="value"
         :options="options"
+        :loading="loading"
         @[changeModel]="modelValueChange"
         @[changeKeyword]="keywordChange"
       >
@@ -37,6 +41,8 @@
   </div>
 </template>
 <script lang="tsx" setup>
+import type { FieldChange } from '../../form'
+
 import {
   ref,
   watch,
@@ -54,7 +60,6 @@ import {
   UPDATE_KEYWORD_EVENT,
   UPDATE_MODEL_EVENT,
 } from '@zz-components/constants'
-import type { FieldChange } from '../../form'
 import { formContextKey } from '../../form'
 import _ from 'lodash-es'
 import { isPromise } from '@zz-components/utils'
@@ -110,6 +115,10 @@ let renderMap = {
 let renderComponent = renderMap[component] || component
 
 const formContext = inject(formContextKey, undefined)
+
+let display = computed(() => {
+  return formContext?.getDisplay(componentId)
+})
 
 let value = computed({
   get: () => {

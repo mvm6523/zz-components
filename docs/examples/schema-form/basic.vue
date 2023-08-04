@@ -135,7 +135,7 @@ let onClick = () => {
 }
 </script>
 <style scoped>
-/deep/ .el-transfer__buttons {
+:deep(.el-transfer__buttons) {
   padding: 0;
 }
 </style>
